@@ -14,35 +14,24 @@ import Card from "./Card";
  * 
  * App --> Carousel --> Card
  */
- function Carousel({ photos, title }) {
-  const [currCardIdx, setCurrCardIdx] = useState(0);
+function Carousel({ photos, title }) {
+  const [currIndex, setCurrIndex] = useState(0);
 
-  const currCard = photos[currCardIdx];
-  const total = photos.length;
+  const goForward = () => {
+    setCurrIndex(currIndex === photos.length - 1 ? 0 : currIndex + 1);
+  };
 
-  //Increments currCardIdx state by 1
-  function goForward() {
-    setCurrCardIdx(currCardIdx + 1);
-  }
+  const goBackward = () => {
+    setCurrIndex(currIndex === 0 ? photos.length - 1 : currIndex - 1);
+  };
 
   return (
     <div className="Carousel">
       <h1>{title}</h1>
       <div className="Carousel-main">
-        <i
-          className="bi bi-arrow-left-circle"
-          onClick={goForward}
-        />
-        <Card
-          caption={currCard.caption}
-          src={currCard.src}
-          currNum={currCardIdx + 1}
-          totalNum={total}
-        />
-        <i
-          className="bi bi-arrow-right-circle"
-          onClick={goForward}
-        />
+        <i className={`bi bi-arrow-left-circle ${currIndex === 0 ? 'hidden' : ''}`} onClick={goBackward} />
+        <Card photo={photos[currIndex]} currNum={currIndex + 1} totalNum={photos.length} />
+        <i className={`bi bi-arrow-right-circle ${currIndex === photos.length - 1 ? 'hidden' : ''}`} onClick={goForward} />
       </div>
     </div>
   );
